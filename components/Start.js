@@ -63,9 +63,9 @@ export default class Start extends React.Component {
                 <Text style={styles.buttonText}>Start Chatting</Text>
               </TouchableOpacity>
             </View>
-
           </View>
         </ImageBackground >
+
       </View >
     )
   }
