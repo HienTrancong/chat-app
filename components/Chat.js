@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, Button, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 
 //Import gifted chat
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 
 export default class Chat extends React.Component {
   constructor() {
@@ -29,7 +29,7 @@ export default class Chat extends React.Component {
         },
         {
           _id: 2,
-          text: 'This is a system message',
+          text: `${name} has entered the chat`,
           createAt: new Date(),
           system: true,
         }
@@ -37,19 +37,32 @@ export default class Chat extends React.Component {
     })
   }
 
-  //
   onSend(messages = []) {
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages)
     }))
   }
 
+  renderBubble(props) {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: '#000',
+          },
+        }}
+      />
+    );
+  }
+
 
   render() {
-
+    let { color } = this.props.route.params;
     return (
-      <View style={{ flex: 1 }}>
+      <View style={[{ backgroundColor: color }, styles.Background]}>
         <GiftedChat
+          renderBubble={this.renderBubble.bind(this)}
           messages={this.state.messages}
           onSend={messages => this.onSend(messages)}
           user={{ _id: 1, }}
@@ -60,22 +73,22 @@ export default class Chat extends React.Component {
   }
 };
 
-// const styles = StyleSheet.create({
+const styles = StyleSheet.create({
 
-//   Background: {
-//     flex: 1,
-//     resizeMode: 'cover',
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
+  Background: {
+    flex: 1,
+    // resizeMode: 'cover',
+    // justifyContent: 'center',
+    // alignItems: 'center',
+  },
 
-//   button: {
-//     width: '88%',
-//     height: 50,
-//     borderWidth: 1,
-//     borderColor: 'black',
-//     justifyContent: 'center',
-//     backgroundColor: 'white',
-//     alignItems: 'center',
-//   },
-// })
+  // button: {
+  //   width: '88%',
+  //   height: 50,
+  //   borderWidth: 1,
+  //   borderColor: 'black',
+  //   justifyContent: 'center',
+  //   backgroundColor: 'white',
+  //   alignItems: 'center',
+  // },
+})

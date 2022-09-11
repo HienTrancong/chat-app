@@ -32,7 +32,7 @@ export default class Start extends React.Component {
                 style={styles.nameInput}
                 onChangeText={(name) => this.setState({ name })}
                 value={this.state.name}
-                placeholder='Your Name'
+                placeholder='Your Name...'
               />
             </View>
 
@@ -116,13 +116,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: '88%',
     height: 50,
-    alignItems: 'center',
+    // alignItems: 'center',
     justifyContent: 'center',
   },
   nameInput: {
+    paddingLeft: 10,
     opacity: 0.5,
     color: '#757083',
-    justifyContent: 'center',
+    fontSize: 16,
     fontWeight: '300',
   },
   // < nameinput box 
@@ -132,12 +133,15 @@ const styles = StyleSheet.create({
     width: '88%',
     height: '60%',
     justifyContent: 'center',
+    // alignContent: 'center',
   },
 
   smallText: {
     fontSize: 16,
     color: '#757083',
     fontWeight: '300',
+    alignContent: 'center',
+    justifyContent: 'center',
   },
 
   colors: {
@@ -191,7 +195,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#FFFFFF',
     fontWeight: '600',
   },
