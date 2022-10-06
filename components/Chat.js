@@ -62,6 +62,7 @@ export default class Chat extends React.Component {
   addMessages() {
     const message = this.state.messages[0];
     this.referenceMessages.add({
+      uid: this.state.uid,
       _id: message._id,
       text: message.text || '',
       createdAt: message.createdAt,
@@ -86,8 +87,10 @@ export default class Chat extends React.Component {
   async saveMessages() {
     try {
       await AsyncStorage.setItem('messages', JSON.stringify(this.state.messages));
-      console.log(this.state.messages);
-    } catch (error) { console.log(error.message) }
+      console.log(this.state.messages + 'here');
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   //Delete messages from asyncstorage
@@ -122,6 +125,7 @@ export default class Chat extends React.Component {
     if (this.state.isConnected == false) {
       this.getMessages();
     } else {
+      console.log('Offline here');
       this.getMessages();
       //Reference to Firestore collection
       // this.referenceMessages = firebase.firestore().collection('messages');
@@ -145,19 +149,17 @@ export default class Chat extends React.Component {
   }
 
   componentWillUnmount() {
-    // if (this.state.isConnected) 
-    // {
-    this.unsubscribe();
-    this.authUnsubscribe();
-    // }
+    if (this.state.isConnected) {
+      this.unsubscribe();
+      this.authUnsubscribe();
+    }
   }
 
   onSend(messages = []) {
     this.setState(
       (previousState) => ({
         messages: GiftedChat.append(previousState.messages, messages)
-      }),
-      () => {
+      }), () => {
         this.addMessages();
         this.saveMessages();
       }
