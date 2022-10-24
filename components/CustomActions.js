@@ -16,7 +16,8 @@ import {
 class CustomActions extends React.Component {
 
   pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    // const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
     try {
       if (status === 'granted') {
         let result = await ImagePicker
@@ -34,7 +35,11 @@ class CustomActions extends React.Component {
   };
 
   takePhoto = async () => {
-    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    // const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    const { status } = await Permissions.askAsync(
+      Permissions.CAMERA,
+      Permissions.MEDIA_LIBRARY
+    );
     try {
       if (status === 'granted') {
         let result = await ImagePicker
@@ -52,14 +57,15 @@ class CustomActions extends React.Component {
   };
 
   getLocation = async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
+    // const { status } = await Location.requestForegroundPermissionsAsync();
+    const { status } = await Permissions.askAsync(Permissions.LOCATION_FOREGROUND);
     try {
       if (status === 'granted') {
         let result = await Location
           .getCurrentPositionAsync({})
-        //   .catch(error => comsole.log(error));
-        // const longitude = JSON.stringify(result.coords.longitude);
-        // const latitude = JSON.stringify(result.coords.latitude);
+          .catch(error => comsole.log(error));
+        const longitude = JSON.stringify(result.coords.longitude);
+        const latitude = JSON.stringify(result.coords.latitude);
         if (result) {
           this.sprops.onSend({
             location: {
@@ -177,12 +183,11 @@ CustomActions.defaultProps = {
   iconTextStyle: {},
 };
 
-CustomActions.propTypes = {
-  onSend: PropTypes.func,
+CustomActions.contextTypes = {
+  actionSheet: PropTypes.func,
 };
 
 CustomActions = connectActionSheet(CustomActions);
-
 
 export default CustomActions;
 

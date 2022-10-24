@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import 'react-native-gesture-handler';
 import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
@@ -241,9 +241,8 @@ export default class Chat extends React.Component {
     );
   }
 
-  renderCustomActions = (props) => {
-    return <CustomActions {...props} />;
-  };
+  renderCustomActions = (props) => <CustomActions {...props} />;
+
 
   //Custom map view
   renderCustomView(props) {
