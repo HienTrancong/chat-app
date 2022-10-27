@@ -241,7 +241,9 @@ export default class Chat extends React.Component {
     );
   }
 
-  renderCustomActions = (props) => <CustomActions {...props} />;
+  renderCustomActions = (props) => {
+    return <CustomActions {...props} />;
+  };
 
 
   //Custom map view

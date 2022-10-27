@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import firebase from 'firebase';
 import 'firebase/firestore';
@@ -13,7 +13,7 @@ import {
   StyleSheet
 } from 'react-native';
 
-class CustomActions extends React.Component {
+export default class CustomActions extends React.Component {
 
   pickImage = async () => {
     // const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -67,7 +67,7 @@ class CustomActions extends React.Component {
         const longitude = JSON.stringify(result.coords.longitude);
         const latitude = JSON.stringify(result.coords.latitude);
         if (result) {
-          this.sprops.onSend({
+          this.props.onSend({
             location: {
               longitude: result.coords.longitude,
               latitude: result.coords.latitude,
@@ -108,15 +108,48 @@ class CustomActions extends React.Component {
     return await snapshot.ref.getDownloadURL();
   }
 
-  onActionPress = () => {
+  // onActionsPress = () => {
+  //   console.log('click here');
+  //   const options = [
+  //     'Choose From Library',
+  //     'Take Picture',
+  //     'Send Location',
+  //     'Cancel',
+  //   ];
+  //   const cancelButtonIndex = options.length - 1;
+  //   // this.props.showActionSheetWithOptions(
+  //   this.context.actionSheet().showActionSheetWithOptions(
+  //     {
+  //       options,
+  //       cancelButtonIndex
+  //     },
+  //     async (buttonIndex) => {
+  //       switch (buttonIndex) {
+  //         case 0:
+  //           console.log('user wants to pick an image');
+  //           return this.pickImage();
+  //         case 1:
+  //           console.log('user wants to take a photo');
+  //           return this.takePhoto();
+  //         case 2:
+  //           console.log('user wants to take a photo');
+  //           return this.getLocation();
+  //       }
+  //     },
+  //   );
+  // };
+
+  onActionsPress = () => {
+    console.log('click here');
     const options = [
-      "Choose From Library",
-      "Take Picture",
-      "Send Location",
-      "Cancel",
+      'Choose From Library',
+      'Take Picture',
+      'Send Location',
+      'Cancel',
     ];
     const cancelButtonIndex = options.length - 1;
-    this.props.showActionSheetWithOptions(
+    this.context.actionSheet().showActionSheetWithOptions(
+      // this.props.showActionSheetWithOptions(
       {
         options,
         cancelButtonIndex
@@ -125,23 +158,43 @@ class CustomActions extends React.Component {
         switch (buttonIndex) {
           case 0:
             console.log('user wants to pick an image');
-            return this.pickImage();
+            return;
           case 1:
             console.log('user wants to take a photo');
-            return this.takePhoto();
+            return;
           case 2:
-            console.log('user wants to take a photo');
-            return this.getLocation();
+            console.log('user wants to get their location');
+          default:
         }
-      },
-    );
+      },);
+
+    // this.props.showActionSheetWithOptions(
+    // this.context.actionSheet().showActionSheetWithOptions(
+    //   {
+    //     options,
+    //     cancelButtonIndex
+    //   },
+    //   async (buttonIndex) => {
+    //     switch (buttonIndex) {
+    //       case 0:
+    //         console.log('user wants to pick an image');
+    //         return this.pickImage();
+    //       case 1:
+    //         console.log('user wants to take a photo');
+    //         return this.takePhoto();
+    //       case 2:
+    //         console.log('user wants to take a photo');
+    //         return this.getLocation();
+    //     }
+    //   },
+    // );
   };
 
   render() {
     return (
       <TouchableOpacity
         style={[styles.container]}
-        onPress={this.onActionPress}
+        onPress={this.onActionsPress}
       >
         <View style={[styles.wrapper, this.props.wrapperStyle]}>
           <Text style={[styles.iconText, this.props.iconTextStyle]}>+</Text>
@@ -175,19 +228,19 @@ const styles = StyleSheet.create({
 });
 
 
-CustomActions.defaultProps = {
-  onSend: () => { },
-  options: {},
-  containerStyle: {},
-  wrapperStyle: {},
-  iconTextStyle: {},
-};
+// CustomActions.defaultProps = {
+//   onSend: () => { },
+//   options: {},
+//   containerStyle: {},
+//   wrapperStyle: {},
+//   iconTextStyle: {},
+// };
 
 CustomActions.contextTypes = {
   actionSheet: PropTypes.func,
 };
 
-CustomActions = connectActionSheet(CustomActions);
+// CustomActions = connectActionSheet(CustomActions);
 
-export default CustomActions;
+// export default CustomActions;
 
