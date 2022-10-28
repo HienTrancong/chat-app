@@ -1,32 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connectActionSheet } from '@expo/react-native-action-sheet';
 import firebase from 'firebase';
 import 'firebase/firestore';
-import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
-import {
-  TouchableOpacity,
-  View,
-  Text,
-  StyleSheet
-} from 'react-native';
 
-class CustomActions extends React.Component {
+import { Actions } from 'react-native-gifted-chat';
 
-  pickImage = async () => {
-    // const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+
+export default function CustomActions(props) {
+
+  const pickImage = async () => {
     try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status === 'granted') {
-        let result = await ImagePicker
-          .launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          }).catch(error => console.log(error));
-        if (!result.cancelled) {
-          const imageUrl = await this.imageUpload(result.uri);
-          this.props.onSend({ image: imageUrl });
+        const image = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: 'Images',
+        }).catch(error => console.log(error));
+
+        if (!image.cancelled) {
+          const imageUrl = await imageUpload(image.uri);
+          props.onSend({ image: imageUrl });
         }
       }
     } catch (error) {
@@ -34,21 +29,17 @@ class CustomActions extends React.Component {
     }
   };
 
-  takePhoto = async () => {
-    // const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    const { status } = await Permissions.askAsync(
-      Permissions.CAMERA,
-      Permissions.MEDIA_LIBRARY
-    );
+  const takePhoto = async () => {
     try {
+      const { status } = await ImagePicker.requestCameraPermissionsAsync();
       if (status === 'granted') {
-        let result = await ImagePicker
-          .launchCameraAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          }).catch(error => comsole.log(error));
-        if (!result.cancelled) {
-          const imageUrl = await this.imageUpload(result.uri);
-          this.props.onSend({ image: imageUrl });
+        const image = await ImagePicker.launchCameraAsync({
+          mediaTypes: 'Images',
+        }).catch(error => comsole.log(error));
+
+        if (!image.cancelled) {
+          const imageUrl = await imageUpload(image.uri);
+          props.onSend({ image: imageUrl });
         }
       }
     } catch (error) {
@@ -56,22 +47,19 @@ class CustomActions extends React.Component {
     }
   };
 
-  getLocation = async () => {
-    // const { status } = await Location.requestForegroundPermissionsAsync();
-    const { status } = await Permissions.askAsync(Permissions.LOCATION_FOREGROUND);
+  const getLocation = async () => {
     try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
       if (status === 'granted') {
-        let result = await Location
-          .getCurrentPositionAsync({})
-          .catch(error => comsole.log(error));
+        let result = await Location.getCurrentPositionAsync({}).catch(error => console.log(error));
         const longitude = JSON.stringify(result.coords.longitude);
         const latitude = JSON.stringify(result.coords.latitude);
         if (result) {
-          this.sprops.onSend({
+          props.onSend({
             location: {
               longitude: result.coords.longitude,
               latitude: result.coords.latitude,
-            }
+            },
           });
         }
       }
@@ -80,7 +68,7 @@ class CustomActions extends React.Component {
     }
   }
 
-  imageUpload = async (uri) => {
+  const imageUpload = async (uri) => {
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.onload = function () {
@@ -95,60 +83,32 @@ class CustomActions extends React.Component {
       xhr.send(null);
     });
 
-    //Get image name from uri
+
     const imageNameBefore = uri.split('/');
     const imageName = imageNameBefore[imageNameBefore.length - 1];
-    //reference to firestore storage
     const ref = firebase.storage().ref().child(`images/${imageName}`);
-    //put the blob data into the referenced storage using put(async promise)
     const snapshot = await ref.put(blob);
-    //close the connection
     blob.close();
-    //get image URL from storage
     return await snapshot.ref.getDownloadURL();
   }
 
-  onActionPress = () => {
-    const options = [
-      "Choose From Library",
-      "Take Picture",
-      "Send Location",
-      "Cancel",
-    ];
-    const cancelButtonIndex = options.length - 1;
-    this.props.showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex
-      },
-      async (buttonIndex) => {
-        switch (buttonIndex) {
-          case 0:
-            console.log('user wants to pick an image');
-            return this.pickImage();
-          case 1:
-            console.log('user wants to take a photo');
-            return this.takePhoto();
-          case 2:
-            console.log('user wants to take a photo');
-            return this.getLocation();
-        }
-      },
-    );
-  };
-
-  render() {
-    return (
-      <TouchableOpacity
-        style={[styles.container]}
-        onPress={this.onActionPress}
-      >
-        <View style={[styles.wrapper, this.props.wrapperStyle]}>
-          <Text style={[styles.iconText, this.props.iconTextStyle]}>+</Text>
-        </View>
-      </TouchableOpacity >
-    );
-  }
+  return (
+    <Actions
+      {...props}
+      containerStyle={styles.container}
+      options={{
+        'Send image from library': pickImage,
+        'Take Photo': takePhoto,
+        'Share location': getLocation,
+        Return: () => { },
+      }}
+      optionTintColor='#000000'
+      accessible={true}
+      accessibilityLabel='Actions menu'
+      accessibilityHint='Display menu to send a picture, take a picture or send location'
+      accessibilityRole='menu'
+    />
+  );
 }
 
 const styles = StyleSheet.create({
@@ -175,19 +135,27 @@ const styles = StyleSheet.create({
 });
 
 
-CustomActions.defaultProps = {
-  onSend: () => { },
-  options: {},
-  containerStyle: {},
-  wrapperStyle: {},
-  iconTextStyle: {},
-};
+// CustomActions.defaultProps = {
+//   onSend: () => { },
+//   options: {},
+//   containerStyle: {},
+//   wrapperStyle: {},
+//   iconTextStyle: {},
+// };
 
-CustomActions.contextTypes = {
-  actionSheet: PropTypes.func,
-};
+// CustomActions.contextTypes = {
+//   actionSheet: PropTypes.func,
+//   showActionSheetWithOptions: PropTypes.func,
 
-CustomActions = connectActionSheet(CustomActions);
+// };
 
-export default CustomActions;
+// CustomActions.propTypes = {
+//   onSend: PropTypes.func,
+//   options: PropTypes.object,
+//   actionSheet: PropTypes.func,
+// };
+
+// CustomActions = connectActionSheet(CustomActions);
+
+// export default CustomActions;
 

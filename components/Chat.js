@@ -102,48 +102,6 @@ export default class Chat extends React.Component {
     }
   }
 
-
-  // componentDidMount() {
-  //   //Set name as chat title
-  //   let { name } = this.props.route.params;
-  //   this.props.navigation.setOptions({ title: name });
-
-  //   //Netinfo to check connection status
-  //   NetInfo.fetch().then(connection => {
-  //     if (connection.isConnected) {
-  //       console.log('Online');
-  //       this.setState({ isConnected: true });
-  //     } else {
-  //       console.log('Offline');
-  //       this.setState({ isConnected: false });
-  //     }
-  //   });
-
-  //   if (this.state.isConnected == false) {
-  //     this.getMessages();
-  //   } else {
-  //     this.getMessages();
-  //     //Reference to Firestore collection
-  //     // this.referenceMessages = firebase.firestore().collection('messages');
-
-  //     //Authenticate users anonymously
-  //     this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
-  //       if (!user) {
-  //         firebase.auth().signInAnonymously();
-  //       }
-  //       this.setState({
-  //         uid: user.uid,
-  //         messages: [],
-  //         // avatar: 'https://placeimg.com/140/140/any'
-  //       });
-  //       this.referenceMessages = firebase.firestore().collection('messages');
-  //       this.unsubscribe = this.referenceMessages
-  //         .orderBy("createdAt", "desc")
-  //         .onSnapshot(this.onCollectionUpdate);
-  //     });
-  //   }
-  // }
-
   componentDidMount() {
     //Set name as chat title
     let { name } = this.props.route.params;
@@ -215,7 +173,6 @@ export default class Chat extends React.Component {
     });
   }
 
-  //Show/hide input bar by renderInputToolbar from Gift Chat
   renderInputToolbar(props) {
     if (this.state.isConnected == false) {
     } else {
@@ -243,8 +200,6 @@ export default class Chat extends React.Component {
 
   renderCustomActions = (props) => <CustomActions {...props} />;
 
-
-  //Custom map view
   renderCustomView(props) {
     const { currentMessage } = props;
     if (currentMessage.location) {
