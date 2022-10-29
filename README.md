@@ -1,8 +1,5 @@
 # CHAT-APP
 
-![Screenshot 2022-10-29 192022](https://user-images.githubusercontent.com/89924593/198844896-65d9cfd5-3a70-47de-9636-ce2861632ac0.png)
-
-
 ## Purpose
 
 A chat app for mobile devices using React Native. The app will
