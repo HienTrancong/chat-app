@@ -134,28 +134,3 @@ const styles = StyleSheet.create({
   },
 });
 
-
-// CustomActions.defaultProps = {
-//   onSend: () => { },
-//   options: {},
-//   containerStyle: {},
-//   wrapperStyle: {},
-//   iconTextStyle: {},
-// };
-
-// CustomActions.contextTypes = {
-//   actionSheet: PropTypes.func,
-//   showActionSheetWithOptions: PropTypes.func,
-
-// };
-
-// CustomActions.propTypes = {
-//   onSend: PropTypes.func,
-//   options: PropTypes.object,
-//   actionSheet: PropTypes.func,
-// };
-
-// CustomActions = connectActionSheet(CustomActions);
-
-// export default CustomActions;
-
