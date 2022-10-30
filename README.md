@@ -1,4 +1,6 @@
 # CHAT-APP
+![image](https://user-images.githubusercontent.com/89924593/198895894-9a49a362-730c-4fca-b085-cddc6384889a.png)
+![image](https://user-images.githubusercontent.com/89924593/198895967-7283d6fc-1d6c-4aec-b464-dc1a91432945.png)
 
 ## Purpose
 
