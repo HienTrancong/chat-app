@@ -27,3 +27,36 @@ location.
 - Location data is sent via the chat in a map view.
 - The chat interface and functionality are created using the Gifted Chat library.
 - Codebase contains comments.
+
+## Dependencies
+
+## How to run project
+
+First of all make sure Node and npm are available on your machine. To install node, visit:
+https://nodejs.org/en/download/
+
+1. Clone the repository
+
+```
+git clone https://github.com/HienTrancong/chat-app.git
+```
+
+2. Install Expo CLI as global npm package
+
+```
+npm install expo-cli --global
+```
+
+3. Install all dependecies using npm
+
+```
+npm install
+```
+
+4. Start project
+
+```
+expo start
+```
+
+5. Launch app on Expo app on mobile phone, or using Android emulator https://developer.android.com/studio/run/emulator
