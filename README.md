@@ -30,7 +30,8 @@ location.
 - The chat interface and functionality are created using the Gifted Chat library.
 - Codebase contains comments.
 
-## Dependencies
+## List of Dependencies
+![image](https://user-images.githubusercontent.com/89924593/199111836-5a61a315-a3f1-433f-b98e-14df49c3fdcf.png)
 
 ## How to run project
 
